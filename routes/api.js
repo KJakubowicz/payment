@@ -1,10 +1,8 @@
 const express = require("express");
 const router  = express.Router();
 
-// action list
-const testAction = require('../actions/api/test');
+const paymentsController = require('../controllers/paymentController');
 
-router.get('/', testAction);
-
+router.get('/', paymentsController.createPayment);
 
 module.exports = router;

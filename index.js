@@ -8,6 +8,5 @@ app.use('/', apiRouter);
 
 //server
 app.listen(config.port, function () {
-    console.log(config.port);
     console.log('serwer słucha....');
 });
