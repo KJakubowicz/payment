@@ -1,19 +1,13 @@
+const MysqlParser = require("../parsers/db/mysql");
+
 class Response {
-
     constructor() {
-    }//end constructor()
+        this.provider = new MysqlParser();
+    } //end constructor()
 
-    success(data) {
-        console.log(data);
-        const response = {
-            message        : data.message,
-            status         : 200,
-            additionalData : data.additionalData,
-        }
-
-        return JSON.stringify(response);
-    }//end success();
-
-}//end class
+    success(data, method) {
+        return JSON.stringify(this.provider[method](data));
+    } //end success();
+} //end class
 
 module.exports = Response;
