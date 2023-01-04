@@ -3,14 +3,14 @@ class MysqlParser {
 
     createPayment(data) {
         const response = {
-            status: 200,
-            success: data.protocol41,
-            message: data.message,
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
             additionalData: {
-                affectedRows: data.affectedRows,
-                warningCount: data.warningCount,
-                changedRows: data.warningCount,
-                insertId: data.insertId,
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+                insertId: data.data.insertId,
             },
         };
         return response;
@@ -18,21 +18,23 @@ class MysqlParser {
 
     getPayments(data) {
         const response = {
-            status: 200,
-            data: data,
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            data: data.data,
         };
         return response;
     } //end createPayment()
 
     updatePayment(data) {
         const response = {
-            status: 200,
-            success: data.protocol41,
-            message: data.message,
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
             additionalData: {
-                affectedRows: data.affectedRows,
-                warningCount: data.warningCount,
-                changedRows: data.warningCount,
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
             },
         };
         return response;
@@ -40,8 +42,14 @@ class MysqlParser {
 
     deletePayment(data) {
         const response = {
-            status: 200,
-            data: data,
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+            },
         };
         return response;
     } //end createPayment()

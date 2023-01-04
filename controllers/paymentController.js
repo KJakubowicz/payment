@@ -3,28 +3,24 @@ const Response = require("../controllers/responseController");
 
 module.exports = {
     getPayments(req, res) {
-        const response = new Response();
-
-        const paymentRes = Payment.findAll().then((result) => {
-            res.send(response.success(result, "getPayments"));
+        const paymentRes = Payment.findAll().then((response) => {
+            res.send(response.getResponse("getPayments"));
         });
     },
     getPayment(req, res) {
-        const response = new Response();
         const id = req.params.id;
 
-        const paymentRes = Payment.find(id).then((result) => {
-            res.send(response.success(result, "getPayments"));
+        const paymentRes = Payment.find(id).then((response) => {
+            res.send(response.getResponse("getPayments"));
         });
     },
     createPayment(req, res) {
         const title = req.body.title;
         const total = req.body.total;
         const payment = new Payment(title, total);
-        const response = new Response();
 
-        const paymentRes = payment.save().then((result) => {
-            res.send(response.success(result, "createPayment"));
+        const paymentRes = payment.save().then((response) => {
+            res.send(response.getResponse("createPayment"));
         });
     },
     updatePayment(req, res) {
@@ -32,19 +28,17 @@ module.exports = {
         const total = req.body.total;
         const id = req.params.id;
         const payment = new Payment(title, total);
-        const response = new Response();
 
-        const paymentRes = payment.update(id).then((result) => {
-            res.send(response.success(result, "updatePayment"));
+        const paymentRes = payment.update(id).then((response) => {
+            res.send(response.getResponse("updatePayment"));
         });
     },
     deletePayment(req, res) {
         const payment = new Payment();
-        const response = new Response();
         const id = req.params.id;
 
-        const paymentRes = payment.delete(id).then((result) => {
-            res.send(response.success(result, "deletePayment"));
+        const paymentRes = payment.delete(id).then((response) => {
+            res.send(response.getResponse("deletePayment"));
         });
     },
 };
