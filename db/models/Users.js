@@ -1,6 +1,7 @@
 const db = require("../mysql");
 const Response = require("../../controllers/responseController");
 const UsersValidator = require("../../validators/UsersValidator");
+const DateHelper = require("../../helpers/DateHelper");
 
 class Users {
     constructor(name, surname, email, role, password) {
@@ -14,11 +15,7 @@ class Users {
     async save() {
         const response = new Response();
         const usersValidator = new UsersValidator();
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDay();
-        const createdAtDate = `${year}-${month}-${day}`;
+        const createdAtDate = DateHelper.getActualSqlDate();
         const insertSql = `
             INSERT INTO users
                 (name, surname, email, password, role, created_at) 
@@ -39,7 +36,7 @@ class Users {
         return new Promise((resolve, reject) => {
             db.query(insertSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -51,16 +48,15 @@ class Users {
 
     async update(id) {
         const response = new Response();
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDay();
-        const createdAtDate = `${year}-${month}-${day}`;
+        const createdAtDate = DateHelper.getActualSqlDate();
         const updateSql = `
-            UPDATE payments
+            UPDATE users
             SET
-                title = '${this.title}',
-                total ='${this.total}',
+                name = '${this.name}',
+                surname ='${this.surname}',
+                email = '${this.email}',
+                password = '${this.password}',
+                role ='${this.role}',
                 created_at = '${createdAtDate}'
             WHERE 
                 id = '${id}'
@@ -69,7 +65,7 @@ class Users {
         return new Promise((resolve, reject) => {
             db.query(updateSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -82,7 +78,7 @@ class Users {
     async delete(id) {
         const response = new Response();
         const deleteSql = `
-            DELETE FROM payments
+            DELETE FROM users
             WHERE 
                 id = '${id}'
         `;
@@ -90,7 +86,7 @@ class Users {
         return new Promise((resolve, reject) => {
             db.query(deleteSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -103,13 +99,13 @@ class Users {
     static findAll() {
         const response = new Response();
         const findAllSql = `
-            SELECT * FROM payments WHERE 1;
+            SELECT * FROM users WHERE 1;
         `;
 
         return new Promise((resolve, reject) => {
             db.query(findAllSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -122,7 +118,7 @@ class Users {
     static find(id) {
         const response = new Response();
         const findSql = `
-            SELECT * FROM payments WHERE id = '${id}';
+            SELECT * FROM users WHERE id = '${id}';
         `;
 
         return new Promise((resolve, reject) => {

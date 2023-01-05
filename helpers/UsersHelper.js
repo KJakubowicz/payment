@@ -1,4 +1,5 @@
 const db = require("../db/mysql");
+var crypto = require("crypto");
 
 class UsersHelper {
     static async addressExists(address) {
@@ -37,6 +38,12 @@ class UsersHelper {
 
         return validation;
     } //end addressCharactrs
+
+    static hashPassword(password, iterations, number) {
+        return crypto
+            .pbkdf2Sync(password, "", iterations, number, `sha512`)
+            .toString(`hex`);
+    } //end hashPassowrd
 } //end class
 
 module.exports = UsersHelper;

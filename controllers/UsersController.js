@@ -1,16 +1,16 @@
 const Users = require("../db/models/Users");
-
+const Helper = require("../helpers/UsersHelper");
 module.exports = {
     getUsers(req, res) {
-        const paymentRes = Payment.findAll().then((response) => {
-            res.send(response.getResponse("getPayments"));
+        const urserRes = Users.findAll().then((response) => {
+            res.send(response.getResponse("getUsers"));
         });
     },
     getUser(req, res) {
         const id = req.params.id;
 
-        const paymentRes = Payment.find(id).then((response) => {
-            res.send(response.getResponse("getPayments"));
+        const urserRes = Users.find(id).then((response) => {
+            res.send(response.getResponse("getUsers"));
         });
     },
     createUser(req, res) {
@@ -18,7 +18,7 @@ module.exports = {
         const surname = req.body.surname;
         const email = req.body.email;
         const role = req.body.role;
-        const password = req.body.password;
+        const password = Helper.hashPassword(req.body.password, 1000, 16);
         const users = new Users(name, surname, email, role, password);
 
         const userRes = users.save().then((response) => {
@@ -26,21 +26,24 @@ module.exports = {
         });
     },
     updateUser(req, res) {
-        const title = req.body.title;
-        const total = req.body.total;
         const id = req.params.id;
-        const payment = new Payment(title, total);
+        const name = req.body.name;
+        const surname = req.body.surname;
+        const email = req.body.email;
+        const role = req.body.role;
+        const password = Helper.hashPassword(req.body.password, 1000, 16);
+        const users = new Users(name, surname, email, role, password);
 
-        const paymentRes = payment.update(id).then((response) => {
-            res.send(response.getResponse("updatePayment"));
+        const userRes = users.update(id).then((response) => {
+            res.send(response.getResponse("updateUser"));
         });
     },
     deleteUser(req, res) {
-        const payment = new Payment();
+        const users = new Users();
         const id = req.params.id;
 
-        const paymentRes = payment.delete(id).then((response) => {
-            res.send(response.getResponse("deletePayment"));
+        const userRes = users.delete(id).then((response) => {
+            res.send(response.getResponse("deleteUser"));
         });
     },
 };
