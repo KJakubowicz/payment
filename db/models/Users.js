@@ -15,13 +15,6 @@ class Users {
     async save() {
         const response = new Response();
         const usersValidator = new UsersValidator();
-        const createdAtDate = DateHelper.getActualSqlDate();
-        const insertSql = `
-            INSERT INTO users
-                (name, surname, email, password, role, created_at) 
-            VALUES 
-                ('${this.name}', '${this.surname}', '${this.email}', '${this.password}', '${this.role}', '${createdAtDate}')
-        `;
 
         if ((await usersValidator.email(this.email)) === false) {
             response.setData(
@@ -32,6 +25,14 @@ class Users {
             );
             return response;
         }
+
+        const createdAtDate = DateHelper.getActualSqlDate();
+        const insertSql = `
+            INSERT INTO users
+                (name, surname, email, password, role, created_at) 
+            VALUES 
+                ('${this.name}', '${this.surname}', '${this.email}', '${this.password}', '${this.role}', '${createdAtDate}')
+        `;
 
         return new Promise((resolve, reject) => {
             db.query(insertSql, function (error, results, fields) {
@@ -48,6 +49,18 @@ class Users {
 
     async update(id) {
         const response = new Response();
+        const usersValidator = new UsersValidator();
+
+        if ((await usersValidator.email(this.email)) === false) {
+            response.setData(
+                false,
+                "e-mail is incorrect or already exists",
+                409,
+                []
+            );
+            return response;
+        }
+
         const createdAtDate = DateHelper.getActualSqlDate();
         const updateSql = `
             UPDATE users
