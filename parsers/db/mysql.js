@@ -24,7 +24,7 @@ class MysqlParser {
             data: data.data,
         };
         return response;
-    } //end createPayment()
+    } //end getPayments()
 
     updatePayment(data) {
         const response = {
@@ -38,7 +38,7 @@ class MysqlParser {
             },
         };
         return response;
-    } //end createPayment()
+    } //end updatePayment()
 
     deletePayment(data) {
         const response = {
@@ -52,7 +52,60 @@ class MysqlParser {
             },
         };
         return response;
-    } //end createPayment()
+    } //end deletePayment()
+
+    createUser(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+                insertId: data.data.insertId,
+            },
+        };
+        return response;
+    } //end createUser()
+
+    getUsers(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            data: data.data,
+        };
+        return response;
+    } //end getUsers()
+
+    updateUser(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+            },
+        };
+        return response;
+    } //end updateUser()
+
+    deleteUser(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+            },
+        };
+        return response;
+    } //end deleteUser()
 } //end class
 
 module.exports = MysqlParser;

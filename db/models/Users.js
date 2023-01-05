@@ -1,30 +1,37 @@
 const db = require("../mysql");
 const Response = require("../../controllers/responseController");
-const DateHelper = require("../../helpers/DateHelper");
 const UsersValidator = require("../../validators/UsersValidator");
+const DateHelper = require("../../helpers/DateHelper");
 
-class Payment {
-    constructor(title, total, userId) {
-        this.title = title;
-        this.total = total;
-        this.userId = userId;
+class Users {
+    constructor(name, surname, email, role, password) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     } //end constructor()
 
     async save() {
         const response = new Response();
         const usersValidator = new UsersValidator();
 
-        if ((await usersValidator.userExists(this.userId)) === false) {
-            response.setData(false, "User doesn't exists", 404, []);
+        if ((await usersValidator.email(this.email)) === false) {
+            response.setData(
+                false,
+                "e-mail is incorrect or already exists",
+                409,
+                []
+            );
             return response;
         }
 
         const createdAtDate = DateHelper.getActualSqlDate();
         const insertSql = `
-            INSERT INTO payments
-                (created_by, title, total, created_at) 
+            INSERT INTO users
+                (name, surname, email, password, role, created_at) 
             VALUES 
-                ('${this.userId}', '${this.title}', '${this.total}', '${createdAtDate}')
+                ('${this.name}', '${this.surname}', '${this.email}', '${this.password}', '${this.role}', '${createdAtDate}')
         `;
 
         return new Promise((resolve, reject) => {
@@ -42,12 +49,27 @@ class Payment {
 
     async update(id) {
         const response = new Response();
+        const usersValidator = new UsersValidator();
+
+        if ((await usersValidator.email(this.email)) === false) {
+            response.setData(
+                false,
+                "e-mail is incorrect or already exists",
+                409,
+                []
+            );
+            return response;
+        }
+
         const createdAtDate = DateHelper.getActualSqlDate();
         const updateSql = `
-            UPDATE payments
+            UPDATE users
             SET
-                title = '${this.title}',
-                total ='${this.total}',
+                name = '${this.name}',
+                surname ='${this.surname}',
+                email = '${this.email}',
+                password = '${this.password}',
+                role ='${this.role}',
                 created_at = '${createdAtDate}'
             WHERE 
                 id = '${id}'
@@ -69,7 +91,7 @@ class Payment {
     async delete(id) {
         const response = new Response();
         const deleteSql = `
-            DELETE FROM payments
+            DELETE FROM users
             WHERE 
                 id = '${id}'
         `;
@@ -90,7 +112,7 @@ class Payment {
     static findAll() {
         const response = new Response();
         const findAllSql = `
-            SELECT * FROM payments WHERE 1;
+            SELECT * FROM users WHERE 1;
         `;
 
         return new Promise((resolve, reject) => {
@@ -109,7 +131,7 @@ class Payment {
     static find(id) {
         const response = new Response();
         const findSql = `
-            SELECT * FROM payments WHERE id = '${id}';
+            SELECT * FROM users WHERE id = '${id}';
         `;
 
         return new Promise((resolve, reject) => {
@@ -126,4 +148,4 @@ class Payment {
     } //end find()
 } //end class
 
-module.exports = Payment;
+module.exports = Users;
