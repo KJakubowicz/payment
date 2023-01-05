@@ -1,5 +1,6 @@
 const db = require("../mysql");
 const Response = require("../../controllers/responseController");
+const DateHelper = require("../../helpers/DateHelper");
 
 class Payment {
     constructor(title, total) {
@@ -9,11 +10,7 @@ class Payment {
 
     async save() {
         const response = new Response();
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDay();
-        const createdAtDate = `${year}-${month}-${day}`;
+        const createdAtDate = DateHelper.getActualSqlDate();
         const insertSql = `
             INSERT INTO payments
                 (title, total, created_at) 
@@ -24,7 +21,7 @@ class Payment {
         return new Promise((resolve, reject) => {
             db.query(insertSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -36,11 +33,7 @@ class Payment {
 
     async update(id) {
         const response = new Response();
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDay();
-        const createdAtDate = `${year}-${month}-${day}`;
+        const createdAtDate = DateHelper.getActualSqlDate();
         const updateSql = `
             UPDATE payments
             SET
@@ -54,7 +47,7 @@ class Payment {
         return new Promise((resolve, reject) => {
             db.query(updateSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -75,7 +68,7 @@ class Payment {
         return new Promise((resolve, reject) => {
             db.query(deleteSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }
@@ -94,7 +87,7 @@ class Payment {
         return new Promise((resolve, reject) => {
             db.query(findAllSql, function (error, results, fields) {
                 if (error) {
-                    response.setData(false, "error_message", error.code, []);
+                    response.setData(false, error.sqlMessage, error.code, []);
                 } else {
                     response.setData(true, "", "", results);
                 }

@@ -1,5 +1,5 @@
-const Payment = require("../db/models/payment");
-const Response = require("../controllers/responseController");
+const Payment = require("../db/models/Payment");
+const Response = require("./responseController");
 
 module.exports = {
     getPayments(req, res) {
