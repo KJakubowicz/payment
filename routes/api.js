@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const paymentsController = require("../controllers/paymentController");
-const usersController = require("../controllers/usersController");
+const paymentsController = require("../controllers/PaymentController");
+const usersController = require("../controllers/UsersController");
 
 // PAYMENTS
 router.get("/payments", paymentsController.getPayments);

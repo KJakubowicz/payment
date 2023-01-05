@@ -44,6 +44,30 @@ class UsersHelper {
             .pbkdf2Sync(password, "", iterations, number, `sha512`)
             .toString(`hex`);
     } //end hashPassowrd
+
+    static async userExists(id) {
+        let result = true;
+        const findUser = `
+            SELECT 
+                COUNT(id) as existsCount
+            FROM users
+            WHERE
+                id = ('${id}')
+        `;
+
+        return new Promise((resolve, reject) => {
+            db.query(findUser, function (error, results, fields) {
+                if (error) {
+                    result = false;
+                } else {
+                    if (results[0].existsCount === 0) {
+                        result = false;
+                    }
+                }
+                resolve(result);
+            });
+        });
+    } //end userExists
 } //end class
 
 module.exports = UsersHelper;
