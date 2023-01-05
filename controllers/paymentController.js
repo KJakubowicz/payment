@@ -17,7 +17,8 @@ module.exports = {
     createPayment(req, res) {
         const title = req.body.title;
         const total = req.body.total;
-        const payment = new Payment(title, total);
+        const userId = req.body.user_id;
+        const payment = new Payment(title, total, userId);
 
         const paymentRes = payment.save().then((response) => {
             res.send(response.getResponse("createPayment"));

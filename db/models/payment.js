@@ -1,21 +1,30 @@
 const db = require("../mysql");
 const Response = require("../../controllers/responseController");
 const DateHelper = require("../../helpers/DateHelper");
+const UsersValidator = require("../../validators/UsersValidator");
 
 class Payment {
-    constructor(title, total) {
+    constructor(title, total, userId) {
         this.title = title;
         this.total = total;
+        this.userId = userId;
     } //end constructor()
 
     async save() {
         const response = new Response();
+        const usersValidator = new UsersValidator();
+
+        if ((await usersValidator.userExists(this.userId)) === false) {
+            response.setData(false, "User doesn't exists", 404, []);
+            return response;
+        }
+
         const createdAtDate = DateHelper.getActualSqlDate();
         const insertSql = `
             INSERT INTO payments
-                (title, total, created_at) 
+                (created_by, title, total, created_at) 
             VALUES 
-                ('${this.title}', '${this.total}', '${createdAtDate}')
+                ('${this.userId}', '${this.title}', '${this.total}', '${createdAtDate}')
         `;
 
         return new Promise((resolve, reject) => {
