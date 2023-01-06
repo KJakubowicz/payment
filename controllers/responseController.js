@@ -1,4 +1,4 @@
-const MysqlParser = require("../parsers/db/mysql");
+const MysqlParser = require("../parsers/db/Mysql");
 
 class Response {
     success;

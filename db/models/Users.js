@@ -1,5 +1,5 @@
-const db = require("../mysql");
-const Response = require("../../controllers/responseController");
+const db = require("../Mysql");
+const Response = require("../../controllers/ResponseController");
 const UsersValidator = require("../../validators/UsersValidator");
 const DateHelper = require("../../helpers/DateHelper");
 
@@ -50,7 +50,8 @@ class Users {
     async update(id) {
         const response = new Response();
         const usersValidator = new UsersValidator();
-
+        // TODO
+        // Podczas sprawdzania nie może sprawdzać, czy email istnieje biorąc pod uwagę swój własny adres
         if ((await usersValidator.email(this.email)) === false) {
             response.setData(
                 false,

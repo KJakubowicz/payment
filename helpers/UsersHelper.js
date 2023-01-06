@@ -1,4 +1,4 @@
-const db = require("../db/mysql");
+const db = require("../db/Mysql");
 var crypto = require("crypto");
 
 class UsersHelper {

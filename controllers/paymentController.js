@@ -1,16 +1,16 @@
 const Payment = require("../db/models/Payment");
-const Response = require("./responseController");
+const Response = require("./ResponseController");
 
 module.exports = {
     getPayments(req, res) {
-        const paymentRes = Payment.findAll().then((response) => {
+        Payment.findAll().then((response) => {
             res.send(response.getResponse("getPayments"));
         });
     },
     getPayment(req, res) {
         const id = req.params.id;
 
-        const paymentRes = Payment.find(id).then((response) => {
+        Payment.find(id).then((response) => {
             res.send(response.getResponse("getPayments"));
         });
     },
@@ -20,7 +20,7 @@ module.exports = {
         const userId = req.body.user_id;
         const payment = new Payment(title, total, userId);
 
-        const paymentRes = payment.save().then((response) => {
+        payment.save().then((response) => {
             res.send(response.getResponse("createPayment"));
         });
     },
@@ -30,7 +30,7 @@ module.exports = {
         const id = req.params.id;
         const payment = new Payment(title, total);
 
-        const paymentRes = payment.update(id).then((response) => {
+        payment.update(id).then((response) => {
             res.send(response.getResponse("updatePayment"));
         });
     },
@@ -38,7 +38,7 @@ module.exports = {
         const payment = new Payment();
         const id = req.params.id;
 
-        const paymentRes = payment.delete(id).then((response) => {
+        payment.delete(id).then((response) => {
             res.send(response.getResponse("deletePayment"));
         });
     },
