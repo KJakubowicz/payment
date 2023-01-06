@@ -1,21 +1,27 @@
 const Users = require("../db/models/Users");
 const Helper = require("../helpers/UsersHelper");
 const MysqlParser = require("../parsers/db/mysql");
-
+const Table = { name: "users" };
 module.exports = {
     async getUsers(req, res) {
-        const response = await Users.findAll();
+        const response = await Users.findAll({ table: Table.name });
         res.send(response.getResponse(MysqlParser.methods.getUsers));
     },
 
     async getUser({ params: { id } }, res) {
-        const response = await Users.find(id);
+        const response = await Users.find({ table: Table.name, id: id });
         res.send(response.getResponse(MysqlParser.methods.getUsers));
     },
 
     async createUser({ body: { name, surname, email, role, password } }, res) {
         const pass = Helper.hashPassword(password, 1000, 16);
-        const response = await (new Users(name, surname, email, role, pass)).save();
+        const response = await new Users(
+            name,
+            surname,
+            email,
+            role,
+            pass
+        ).save();
 
         res.send(response.getResponse(MysqlParser.methods.createUser));
     },

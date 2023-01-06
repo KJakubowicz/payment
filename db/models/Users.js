@@ -2,8 +2,9 @@ const db = require("../Mysql");
 const Response = require("../../controllers/ResponseController");
 const UsersValidator = require("../../validators/UsersValidator");
 const DateHelper = require("../../helpers/DateHelper");
+const BasicModel = require("../models/Basis");
 
-class Users {
+class Users extends BasicModel {
     constructor(name, surname, email, role, password) {
         this.name = name;
         this.surname = surname;
@@ -80,19 +81,19 @@ class Users {
     } //end update()
 
     // DRY - optimisation
-    async call({sql, response}) {
-        return new Promise((resolve) => {
-            db.query(sql, function (error, results) {
-                if (error) {
-                    response.setData(false, error.sqlMessage, error.code, []);
-                } else {
-                    response.setData(true, "", "", results);
-                }
+    // async call({ sql, response }) {
+    //     return new Promise((resolve) => {
+    //         db.query(sql, function (error, results) {
+    //             if (error) {
+    //                 response.setData(false, error.sqlMessage, error.code, []);
+    //             } else {
+    //                 response.setData(true, "", "", results);
+    //             }
 
-                resolve(response);
-            });
-        });
-    }
+    //             resolve(response);
+    //         });
+    //     });
+    // }
 
     async delete(id) {
         const response = new Response();
@@ -124,24 +125,24 @@ class Users {
         });
     } //end findAll()
 
-    static find(id) {
-        const response = new Response();
-        const findSql = `
-            SELECT * FROM users WHERE id = '${id}';
-        `;
+    // static find(id) {
+    //     const response = new Response();
+    //     const findSql = `
+    //         SELECT * FROM users WHERE id = '${id}';
+    //     `;
 
-        return new Promise((resolve, reject) => {
-            db.query(findSql, function (error, results, fields) {
-                if (error) {
-                    response.setData(false, error.sqlMessage, error.code, []);
-                } else {
-                    response.setData(true, "", "", results);
-                }
+    //     return new Promise((resolve, reject) => {
+    //         db.query(findSql, function (error, results, fields) {
+    //             if (error) {
+    //                 response.setData(false, error.sqlMessage, error.code, []);
+    //             } else {
+    //                 response.setData(true, "", "", results);
+    //             }
 
-                resolve(response);
-            });
-        });
-    } //end find()
+    //             resolve(response);
+    //         });
+    //     });
+    // } //end find()
 } //end class
 
 module.exports = Users;
