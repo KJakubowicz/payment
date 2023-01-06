@@ -1,5 +1,5 @@
-const db = require("../mysql");
-const Response = require("../../controllers/responseController");
+const db = require("../Mysql");
+const Response = require("../../controllers/ResponseController");
 const UsersValidator = require("../../validators/UsersValidator");
 const DateHelper = require("../../helpers/DateHelper");
 
