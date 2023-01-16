@@ -1,14 +1,12 @@
 const Helper = require("../helpers/UsersHelper");
 
 class UsersValidator {
-    constructor() {
-        this.validation = true;
-    } //end construcotr
+    validation = true;
 
     async email(address) {
         if (
-            (await Helper.addressExists(address)) === false ||
-            Helper.addressCharactrs(address) === false
+            !await Helper.addressExists(address) ||
+            !Helper.addressCharactrs(address)
         ) {
             this.validation = false;
         }

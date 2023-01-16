@@ -1,33 +1,42 @@
 class MysqlParser {
+    static methods = {
+        createPayment: "createPayment",
+        getPayments: "getPayments",
+        updatePayment: "updatePayment",
+        deletePayment: "deletePayment",
+        createUser: "createUser",
+        getUsers: "getUsers",
+        updateUser: "updateUser",
+        deleteUser: "deleteUser",
+    }
+
     constructor() {} //end constructor()
 
-    createPayment(data) {
-        const response = {
-            success: data.success,
-            errorMessage: data.errorMessage,
-            errorCode: data.errorCode,
+    createPayment({ success, errorMessage, errorCode, data: { affectedRows, warningCount, insertId } }) {
+        return {
+            success,
+            errorMessage,
+            errorCode,
             additionalData: {
-                affectedRows: data.data.affectedRows,
-                warningCount: data.data.warningCount,
-                changedRows: data.data.warningCount,
-                insertId: data.data.insertId,
+                affectedRows,
+                warningCount,
+                changedRows: warningCount,
+                insertId,
             },
         };
-        return response;
     } //end createPayment()
 
-    getPayments(data) {
-        const response = {
-            success: data.success,
-            errorMessage: data.errorMessage,
-            errorCode: data.errorCode,
-            data: data.data,
+    getPayments({ success, errorMessage, errorCode, data }) {
+        return {
+            success,
+            errorMessage,
+            errorCode,
+            data,
         };
-        return response;
     } //end getPayments()
 
     updatePayment(data) {
-        const response = {
+         return {
             success: data.success,
             errorMessage: data.errorMessage,
             errorCode: data.errorCode,
@@ -37,7 +46,6 @@ class MysqlParser {
                 changedRows: data.data.warningCount,
             },
         };
-        return response;
     } //end updatePayment()
 
     deletePayment(data) {

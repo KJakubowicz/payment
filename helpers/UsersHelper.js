@@ -60,7 +60,7 @@ class UsersHelper {
                 if (error) {
                     result = false;
                 } else {
-                    if (results[0].existsCount === 0) {
+                    if (results[0]?.existsCount === 0) { // ? is an optional chaining for security - check if object exists
                         result = false;
                     }
                 }
