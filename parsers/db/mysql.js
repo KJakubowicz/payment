@@ -1,18 +1,27 @@
 class MysqlParser {
     static methods = {
         createPayment: "createPayment",
-        getPayments: "getPayments",
-        updatePayment: "updatePayment",
-        deletePayment: "deletePayment",
         createUser: "createUser",
+        addFriend: "addFirend",
+        getPayments: "getPayments",
         getUsers: "getUsers",
+        getFriends: "getFriends",
+        updatePayment: "updatePayment",
         updateUser: "updateUser",
+        acceptFriend: "acceptFriend",
+        deletePayment: "deletePayment",
         deleteUser: "deleteUser",
-    }
+        deleteFriend: "deleteFriend",
+    };
 
     constructor() {} //end constructor()
 
-    createPayment({ success, errorMessage, errorCode, data: { affectedRows, warningCount, insertId } }) {
+    createPayment({
+        success,
+        errorMessage,
+        errorCode,
+        data: { affectedRows, warningCount, insertId },
+    }) {
         return {
             success,
             errorMessage,
@@ -36,7 +45,7 @@ class MysqlParser {
     } //end getPayments()
 
     updatePayment(data) {
-         return {
+        return {
             success: data.success,
             errorMessage: data.errorMessage,
             errorCode: data.errorCode,
@@ -114,6 +123,59 @@ class MysqlParser {
         };
         return response;
     } //end deleteUser()
+
+    addFriend(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+                insertId: data.data.insertId,
+            },
+        };
+        return response;
+    } //end addFriend()
+
+    getFriends(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            data: data.data,
+        };
+        return response;
+    } //end getFriends()
+
+    acceptFriend(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+            },
+        };
+        return response;
+    } //end acceptFriend()
+
+    deleteFriend(data) {
+        const response = {
+            success: data.success,
+            errorMessage: data.errorMessage,
+            errorCode: data.errorCode,
+            additionalData: {
+                affectedRows: data.data.affectedRows,
+                warningCount: data.data.warningCount,
+                changedRows: data.data.warningCount,
+            },
+        };
+        return response;
+    } //end deleteFriend()
 } //end class
 
 module.exports = MysqlParser;
